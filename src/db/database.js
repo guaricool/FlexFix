@@ -10,27 +10,6 @@ db.version(1).stores({
   syncQueue: '++id, timestamp, synced',
 });
 
-// Tipos de tablas
-export class Session extends Dexie.Table {
-  sessions;
-}
-
-export class Delivery extends Dexie.Table {
-  deliveries;
-}
-
-export class Package extends Dexie.Table {
-  packages;
-}
-
-export class Zone extends Dexie.Table {
-  zones;
-}
-
-export class SyncQueue extends Dexie.Table {
-  syncQueue;
-}
-
 // Funciones de sesión
 export async function createSession(username, password) {
   const sessionId = await db.sessions.add({
