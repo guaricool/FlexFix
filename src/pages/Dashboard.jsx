@@ -20,10 +20,14 @@ export default function Dashboard({ sessionId, username, onLogout }) {
   });
   const [loading, setLoading] = useState(true);
   const [selectedZone, setSelectedZone] = useState(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    loadDashboard();
-  }, [sessionId]);
+    if (!initialized) {
+      loadDashboard();
+      setInitialized(true);
+    }
+  }, [sessionId, initialized]);
 
   const loadDashboard = async () => {
     try {
@@ -33,10 +37,11 @@ export default function Dashboard({ sessionId, username, onLogout }) {
       const existingZones = await getZones(sessionId);
       if (existingZones.length === 0) {
         await initializeZones(sessionId);
+        const newZones = await getZones(sessionId);
+        setZones(newZones);
+      } else {
+        setZones(existingZones);
       }
-
-      const zonesData = await getZones(sessionId);
-      setZones(zonesData);
 
       // Cargar estadísticas
       const total = await getTotalPackages(sessionId);
